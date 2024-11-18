@@ -154,9 +154,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 916917378494744782, guid: 98f5378049f9b5745a77677f581b32b1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2336371473481121435}
-    - targetCorrespondingSourceObject: {fileID: 916917378494744782, guid: 98f5378049f9b5745a77677f581b32b1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5252144288962035621}
   m_SourcePrefab: {fileID: 100100000, guid: 98f5378049f9b5745a77677f581b32b1, type: 3}
 --- !u!4 &4330622125271056432 stripped
 Transform:
@@ -189,19 +186,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 0, z: 4}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5252144288962035621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7711485574646442637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5b2c09e4338cbd48b13a3b6f38a672b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  surfaceType: {fileID: 11400000, guid: 4a825bd9985b6a94d9b5104689cc802d, type: 2}
-  onHit:
-    m_PersistentCalls:
-      m_Calls: []

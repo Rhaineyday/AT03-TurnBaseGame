@@ -8,9 +8,9 @@ public class EnemyMovement : MonoBehaviour
     #region Variables
     // Why: These variables track where the object should move and how it should rotate, without changing its position and rotation until later.
     //targetPosition: This Vector3 will store the target position of the object.
-    Vector3 targetPosition;
+    [SerializeField] Vector3 targetPosition;
     //targetRotation: This Vector3 will store the target rotation in Euler angles (pitch, yaw, roll).
-    Vector3 targetRotation;
+    [SerializeField] Vector3 targetRotation;
     //public Text actionPointDisplay;
     public Text enemyTurnText;
     public float unit = 4;

@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class EnemyDetect : MonoBehaviour
 {
-    [SerializeField] Vector3 targetPosition;
-    [SerializeField] Vector3 targetRotation;
-
     public float detectRange = 8f;
 
     public Vector3 raycastForward = Vector3.forward;
@@ -24,20 +21,6 @@ public class EnemyDetect : MonoBehaviour
     //public GameObject attackRange;
 
     public float playerDist;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    transform.position = targetPosition;
-    //    transform.rotation = Quaternion.Euler(targetRotation);
-    //    this.transform.position = new Vector3(transform.position.x, 1, transform.position.z);
-    //}
 
     void Update()
     {

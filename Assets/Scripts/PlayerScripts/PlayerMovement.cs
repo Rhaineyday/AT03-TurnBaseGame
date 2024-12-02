@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 targetRotation;
     public Text actionPointDisplay;
     public float unit = 4;
-    public int actionsInTurn = 5;
+    public int actionsInTurn = 3;
 
     #endregion
     #region Unity Event Functions
@@ -21,7 +21,13 @@ public class PlayerMovement : MonoBehaviour
     //LateUpdate: This Unity method is called once per frame after all Update methods have been executed. It is typically used to adjust things like camera position or object transformations, after all other logic has been processed.
     private void Start()
     {
+        StartPlayerTurn();
+    }
+    public void StartPlayerTurn()
+    {
+        actionsInTurn = 3;
         UpdateActionPoints(0);
+        GameManager.instance.state = GameStates.PlayerTurn;
     }
     private void LateUpdate()
     {
@@ -99,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void UpdateActionPoints(int value)
+    public void UpdateActionPoints(int value)
     {
         actionsInTurn -= value;
         if (actionsInTurn == 0)

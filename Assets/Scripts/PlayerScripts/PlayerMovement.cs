@@ -104,11 +104,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
+    public void EndTurn()
+    {
+        UpdateActionPoints(actionsInTurn);
+    }
     public void UpdateActionPoints(int value)
     {
         actionsInTurn -= value;
-        if (actionsInTurn == 0)
+        if (actionsInTurn <= 0)
         {
             Debug.Log("Action point is now zero");
             // Change to the enemy's turn...

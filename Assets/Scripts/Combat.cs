@@ -50,6 +50,12 @@ public class Combat : MonoBehaviour
         }
 
     }
+
+    public void PlayerEndTurn()
+    {
+
+    }
+
     private void Update()
     {
     

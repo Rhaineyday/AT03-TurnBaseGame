@@ -22,6 +22,7 @@ public class RaycastDetection : MonoBehaviour
     public GameObject canAttackOptions;
     public GameObject attackMelee;
     public GameObject attackRange;
+    public GameObject endTurn;
     public float enemyDist;
 
     void Update()
@@ -30,6 +31,7 @@ public class RaycastDetection : MonoBehaviour
         {
             canAttack = true;
             canAttackOptions.SetActive(canAttack);
+            endTurn.SetActive(canAttack);
             if(enemyDist > 1 && enemyDist< 5)
             {
                 attackMelee.SetActive(true);
@@ -49,6 +51,7 @@ public class RaycastDetection : MonoBehaviour
 
             canAttack = false;
             canAttackOptions.SetActive(canAttack);
+            endTurn.SetActive(canAttack);
         }
         if (BackwardRay())
         {
@@ -89,7 +92,7 @@ public class RaycastDetection : MonoBehaviour
             if (hit.collider.CompareTag("Enemy"))
             {
                 enemyDist = hit.distance;
-                Debug.Log("Enemy detected: Can Attack");
+                //Debug.Log("Enemy detected: Can Attack");
                 return true;
             }
             else

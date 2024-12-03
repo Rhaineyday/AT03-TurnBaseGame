@@ -13,17 +13,55 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] public int maxHealthPotion = 3;
     [SerializeField] public int currentHealthPotion;
     [SerializeField] private bool hasPotion;
+    public int maxAmmo;
+
 
     public void DamagePlayer(float damageValue)
     {
         canHeal = false;
-        currentHealth -= damageValue;
+        currentHealth -= DefenceChance(damageValue);
         UpdateUI();
     }
-
+    public int DefenceChance(float damage)
+    {
+        int dice = Random.Range(1,21);
+        int dodgeVsBlock = Random.Range(0,2);
+        int defence = 0;
+        if (dice == 20)
+        {
+            Debug.Log("Nat 20");
+            return defence;
+        }
+        else if (dice >= 10 && dice < 20)
+        {
+            Debug.Log("High Roll");
+            if (dodgeVsBlock < 1f)
+            {
+                defence = (int)(damage / 2) - PlayerStats.dodgeStat;
+                Debug.Log("Dodge");
+            }
+            else
+            {
+                defence = (int)(damage / (1.25 + (1 * PlayerStats.blockStat)));
+                Debug.Log("Block");
+            }
+        }
+        else if (dice >1 && dice <10)
+        {
+            Debug.Log("Low Roll");
+            defence = (int)damage;
+        }
+        else
+        {
+            Debug.Log("Nat 1");
+            defence = (int)damage*2;
+        }
+        
+        return defence;
+    }
     public void HealPlayer(float healValue)
     {
-        if (playerMovement.actionsInTurn > 0)
+        if (playerMovement.actionsInTurn > 1)
         {
             if (hasPotion == true)
             {
@@ -37,7 +75,7 @@ public class PlayerHealth : MonoBehaviour
                         currentHealth = maxHealth;
                     }
                     UpdateUI();
-                    playerMovement.UpdateActionPoints(1);
+                    playerMovement.UpdateActionPoints(2);
                     if (currentHealthPotion <= 0)
                     {
                         currentHealthPotion = 0;
@@ -65,7 +103,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
-        currentHealthPotion = maxHealthPotion;
+        currentHealthPotion = maxHealthPotion + (3*PlayerStats.healPotStat);
         hasPotion = true;
     }
 
@@ -82,6 +120,21 @@ public class PlayerHealth : MonoBehaviour
         if (collision.gameObject.CompareTag("Damage"))
         {
             DamagePlayer(10);
+        }
+    }
+    public void SetValue()
+    {
+        maxHealthPotion += (3 * PlayerStats.healPotStat);
+        maxHealth += (10 * PlayerStats.healthStat);
+        maxAmmo += (3 * PlayerStats.ammoStat);
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Shrine"))
+        {
+            PlayerStats.Increase();
+            SetValue();
+            Destroy(other);
         }
     }
 }

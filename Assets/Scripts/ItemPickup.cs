@@ -6,13 +6,16 @@ using UnityEngine.UI;
 
 public class ItemPickup : MonoBehaviour
 {
-    [SerializeField] bool potion;
-    [SerializeField] bool ammo;
-    [SerializeField] bool defense;
     [SerializeField] bool hasPickedUp;
+
+    [SerializeField] bool ammo;
+    [SerializeField] public int currentAmmo;
+
+    [SerializeField] bool potion;
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] public int maxHealthPotionREF;
     [SerializeField] public int currentHealthPotionREF;
+
     [SerializeField] private GameObject _playerREF;
     [SerializeField] private GameObject uiObject;
     [SerializeField] private Text uiText;
@@ -29,10 +32,6 @@ public class ItemPickup : MonoBehaviour
                     PickUpPotion();
                 }
                 else if (ammo == true)
-                {
-
-                }
-                else if (defense == true)
                 {
 
                 }
@@ -63,10 +62,6 @@ public class ItemPickup : MonoBehaviour
         {
             // Run ammo functions
         }
-        else if (defense)
-        {
-            // Run defense functions
-        }
     }
 
     void PickUpPotion()
@@ -85,4 +80,8 @@ public class ItemPickup : MonoBehaviour
         }
     }
 
+    void PickUpAmmo()
+    {
+
+    }
 }

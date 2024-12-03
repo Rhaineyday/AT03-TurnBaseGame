@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyDetect : MonoBehaviour
 {
     public float detectRange = 8f;
+    public float detectMelee = 4f;
 
     public Vector3 raycastForward = Vector3.forward;
     public Vector3 raycastBackwards = Vector3.back;
@@ -13,85 +14,96 @@ public class EnemyDetect : MonoBehaviour
     //Can Attack
     public bool canAttack = false;
 
-    //public GameObject playerBehind;
-    //public GameObject playerLeft;
-    //public GameObject playerRight;
-    //public GameObject canAttackOptions;
-    //public GameObject attackMelee;
-    //public GameObject attackRange;
+    public GameObject front;
+    public GameObject left;
+    public GameObject right;
+    public GameObject back;
+
 
     public float playerDist;
 
-    void Update()
-    {
-        if (ForwardRay())
-        {
-            canAttack = true;
-            //canAttackOptions.SetActive(canAttack);
-            if (playerDist > 1 && playerDist < 5)
-            {
-                Debug.Log("Melee - Right in-front");
-                //attackMelee.SetActive(true);
-                //attackRange.SetActive(false);
+    //void Update()
+    //{
+    //    if (ForwardRay())
+    //    {
+    //        canAttack = true;
+    //        //canAttackOptions.SetActive(canAttack);
+    //        if (playerDist > 1 && playerDist < 5)
+    //        {
+    //            Debug.Log("Melee - Right in-front");
+    //            //attackMelee.SetActive(true);
+    //            //attackRange.SetActive(false);
 
-            }
-            else if (playerDist > 5 && playerDist < 10)
-            {
-                Debug.Log("Range - Far way in-front");
-                //attackRange.SetActive(true);
-                //attackMelee.SetActive(false);
-            }
-        }
-        else
-        {
-            //attackMelee.SetActive(false);
-            //attackRange.SetActive(false);
+    //        }
+    //        else if (playerDist > 5 && playerDist < 10)
+    //        {
+    //            Debug.Log("Range - Far way in-front");
+    //            //attackRange.SetActive(true);
+    //            //attackMelee.SetActive(false);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        //attackMelee.SetActive(false);
+    //        //attackRange.SetActive(false);
 
-            canAttack = false;
-            //canAttackOptions.SetActive(canAttack);
-        }
-        if (BackwardRay())
-        {
-            Debug.Log("Back ray");
-            //playerBehind.SetActive(true);
-        }
-        //else
-        //{
-        //    //playerBehind.SetActive(false);
-        //}
-        if (LeftRay())
-        {
-            Debug.Log("Left ray");
-            //playerLeft.SetActive(true);
-        }
-        //else
-        //{
-        //    playerLeft.SetActive(false);
-        //}
-        if (RightRay())
-        {
-            Debug.Log("Right ray");
+    //        canAttack = false;
+    //        //canAttackOptions.SetActive(canAttack);
+    //    }
+    //    if (BackwardRay())
+    //    {
+    //        Debug.Log("Back ray");
+    //        //playerBehind.SetActive(true);
+    //    }
+    //    //else
+    //    //{
+    //    //    //playerBehind.SetActive(false);
+    //    //}
+    //    if (LeftRay())
+    //    {
+    //        Debug.Log("Left ray");
+    //        //playerLeft.SetActive(true);
+    //    }
+    //    //else
+    //    //{
+    //    //    playerLeft.SetActive(false);
+    //    //}
+    //    if (RightRay())
+    //    {
+    //        Debug.Log("Right ray");
 
-            //playerRight.SetActive(true);
-        }
-        //else
-        //{
-        //    playerRight.SetActive(false);
-        //}
-    }
+    //        //playerRight.SetActive(true);
+    //    }
+    //    //else
+    //    //{
+    //    //    playerRight.SetActive(false);
+    //    //}
+    //}
 
-    bool ForwardRay()
+    public bool ForwardRay()
     {
         // Cast a ray from the player's position
         Ray Forward = new Ray(transform.position, transform.TransformDirection(raycastForward));
         RaycastHit hit;
-        Debug.DrawRay(transform.position, transform.TransformDirection(raycastForward) * detectRange, Color.blue);
+        Debug.DrawRay(transform.position, transform.TransformDirection(raycastForward) * detectMelee, Color.blue);
+        // Perform the raycast
+        if (Physics.Raycast(Forward, out hit, detectMelee))
+        {
+            front = hit.collider.gameObject;
+        }
+        else
+        {
+            front = null;
+        }
+
         // Perform the raycast
         if (Physics.Raycast(Forward, out hit, detectRange))
         {
             // Check if the object hit is tagged as "Player"
             if (hit.collider.CompareTag("Player"))
             {
+                Debug.DrawRay(transform.position, transform.TransformDirection(raycastForward) * detectRange, Color.blue);
+
                 playerDist = hit.distance;
                 Debug.Log("Player detected: Can Attack");
                 return true;
@@ -102,21 +114,37 @@ public class EnemyDetect : MonoBehaviour
                 return false;
             }
         }
-        playerDist = 0;
-        return false;
+        else
+        {
+            playerDist = 0;
+            return false;
+        }
+
     }
-    bool BackwardRay()
+    public bool BackwardRay()
     {
         // Cast a ray from the player's position
         Ray Backward = new Ray(transform.position, transform.TransformDirection(raycastBackwards));
         RaycastHit hit;
-        Debug.DrawRay(transform.position, transform.TransformDirection(raycastBackwards) * detectRange, Color.green);
+        Debug.DrawRay(transform.position, transform.TransformDirection(raycastBackwards) * detectMelee, Color.green);
+        // Perform the raycast
+        if (Physics.Raycast(Backward, out hit, detectMelee))
+        {
+            back = hit.collider.gameObject;
+        }
+        else
+        {
+            back = null;
+        }
+
         // Perform the raycast
         if (Physics.Raycast(Backward, out hit, detectRange))
         {
             // Check if the object hit is tagged as "Player"
             if (hit.collider.CompareTag("Player"))
             {
+                Debug.DrawRay(transform.position, transform.TransformDirection(raycastBackwards) * detectRange, Color.green);
+
                 Debug.Log("Player detected Behind");
                 return true;
             }
@@ -128,18 +156,29 @@ public class EnemyDetect : MonoBehaviour
         return false;
     }
 
-    bool LeftRay()
+    public bool LeftRay()
     {
         // Cast a ray from the player's position
         Ray Left = new Ray(transform.position, transform.TransformDirection(raycastLeft));
         RaycastHit hit;
-        Debug.DrawRay(transform.position, transform.TransformDirection(raycastLeft) * detectRange, Color.yellow);
+        Debug.DrawRay(transform.position, transform.TransformDirection(raycastLeft) * detectMelee, Color.yellow);
+        // Perform the raycast
+        if (Physics.Raycast(Left, out hit, detectMelee))
+        {
+            left = hit.collider.gameObject;
+        }
+        else
+        {
+            left = null;
+        }
         // Perform the raycast
         if (Physics.Raycast(Left, out hit, detectRange))
         {
             // Check if the object hit is tagged as "Player"
             if (hit.collider.CompareTag("Player"))
             {
+                Debug.DrawRay(transform.position, transform.TransformDirection(raycastLeft) * detectRange, Color.yellow);
+
                 Debug.Log("Player detected Left");
                 return true;
             }
@@ -151,23 +190,35 @@ public class EnemyDetect : MonoBehaviour
         return false;
     }
 
-    bool RightRay()
+    public bool RightRay()
     {
         // Cast a ray from the player's position
         Ray Right = new Ray(transform.position, transform.TransformDirection(raycastRight));
         RaycastHit hit;
-        Debug.DrawRay(transform.position, transform.TransformDirection(raycastRight) * detectRange, Color.red);
+        Debug.DrawRay(transform.position, transform.TransformDirection(raycastRight) * detectMelee, Color.red);
+        // Perform the raycast
+        if (Physics.Raycast(Right, out hit, detectMelee))
+        {
+            right = hit.collider.gameObject;
+        }
+        else
+        {
+            right = null;
+        }
         // Perform the raycast
         if (Physics.Raycast(Right, out hit, detectRange))
         {
             // Check if the object hit is tagged as "Player"
             if (hit.collider.CompareTag("Player"))
             {
+                Debug.DrawRay(transform.position, transform.TransformDirection(raycastRight) * detectRange, Color.red);
+
                 Debug.Log("Player detected Right");
                 return true;
             }
             else
             {
+
                 return false;
             }
         }

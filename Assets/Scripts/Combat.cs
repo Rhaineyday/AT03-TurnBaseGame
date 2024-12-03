@@ -24,22 +24,35 @@ public class Combat : MonoBehaviour
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
     #region Enemy Taking Damage
-    public void PlayerAttack()
+    public void PlayerAttackMelee()
     {
-        UpdateHP(damageValue);
-        if (enemyCurrentHealth == 0f)
+        if (playerHealth.GetComponent<PlayerMovement>().actionsInTurn > 0)
         {
-            enemy.SetActive(false);
+            playerHealth.GetComponent<PlayerMovement>().UpdateActionPoints(1);
+            UpdateHP(damageValue);
+            if (enemyCurrentHealth == 0f)
+            {
+                enemy.SetActive(false);
+            }
+        }    
+    }
+    public void PlayerAttackRange()
+    {
+
+        if (playerHealth.GetComponent<PlayerMovement>().actionsInTurn > 1)
+        {
+            playerHealth.GetComponent<PlayerMovement>().UpdateActionPoints(2);
+            UpdateHP(damageValue * 0.5f);
+            if (enemyCurrentHealth == 0f)
+            {
+                enemy.SetActive(false);
+            }
         }
-      
+
     }
     private void Update()
     {
-        if (GameManager.instance.state == GameStates.EnemyTurn)
-        {
-            Debug.Log("Enemy Turn");
-            EnemyAttack();
-        }
+    
     }
 
     private void UpdateHP(float damageValue)
@@ -51,15 +64,14 @@ public class Combat : MonoBehaviour
     }
     #endregion
     #region Player Taking Damage
-    public void EnemyAttack()
+    public void EnemyAttack(float value)
     {
         Debug.Log("Enemy Attack");
 
-        playerHealth.DamagePlayer(enemyAttackValue);
+        playerHealth.DamagePlayer(value);
         Debug.Log("Change Player Health");
         playerHealth.GetComponent<PlayerMovement>().StartPlayerTurn();
         Debug.Log("Player Turn");
-
     }
     #endregion
 }

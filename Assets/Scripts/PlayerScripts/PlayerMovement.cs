@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public Text actionPointDisplay;
     public float unit = 4;
     public int actionsInTurn = 3;
-
+    public LayerMask dontIgnore;
     #endregion
     #region Unity Event Functions
     //Why: LateUpdate is used here because you may want to set the final position and rotation of an object after all other logic and physics calculations have been made. This ensures smooth, predictable movement and rotation.
@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Ray line = new Ray(transform.position, transform.forward);
             RaycastHit hitInfo;
-            if (Physics.Raycast(line, out hitInfo, 4))
+            if (Physics.Raycast(line, out hitInfo, 4, dontIgnore))
             {
                 Debug.Log("I CANT MOVE DUDE SOMETHING IS THERE");
                 return;

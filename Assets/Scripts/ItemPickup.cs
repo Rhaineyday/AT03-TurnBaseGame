@@ -9,7 +9,9 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] bool hasPickedUp;
 
     [SerializeField] bool ammo;
-    [SerializeField] public int currentAmmo;
+    [SerializeField] private PlayerHealth playerAmmo;
+    [SerializeField] public int maxAmmoREF;
+    [SerializeField] public int currentAmmoREF;
 
     [SerializeField] bool potion;
     [SerializeField] private PlayerHealth playerHealth;
@@ -33,7 +35,8 @@ public class ItemPickup : MonoBehaviour
                 }
                 else if (ammo == true)
                 {
-
+                    currentAmmoREF = playerHealth.currentAmmo;
+                    PickUpAmmo();
                 }
             }
         }
@@ -60,7 +63,8 @@ public class ItemPickup : MonoBehaviour
         }
         else if (ammo)
         {
-            // Run ammo functions
+            playerAmmo = _playerREF.GetComponent<PlayerHealth>();
+            currentAmmoREF = playerAmmo.currentAmmo;
         }
     }
 
@@ -82,6 +86,17 @@ public class ItemPickup : MonoBehaviour
 
     void PickUpAmmo()
     {
-
+        if (currentAmmoREF >= 0 && currentAmmoREF <= maxAmmoREF-1)
+        {
+            uiObject.SetActive(true);
+            uiText.text = "You found more arrows!";
+            currentAmmoREF += maxAmmoREF;
+            hasPickedUp = true;
+        }
+        else
+        {
+            uiObject.SetActive(true);
+            uiText.text = "You can't carry anymore arrows!";
+        }
     }
 }

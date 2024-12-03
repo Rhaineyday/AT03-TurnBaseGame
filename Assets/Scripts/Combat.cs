@@ -51,16 +51,6 @@ public class Combat : MonoBehaviour
 
     }
 
-    public void PlayerEndTurn()
-    {
-
-    }
-
-    private void Update()
-    {
-    
-    }
-
     private void UpdateHP(float damageValue)
     {
         //apply damage
@@ -79,5 +69,9 @@ public class Combat : MonoBehaviour
         playerHealth.GetComponent<PlayerMovement>().StartPlayerTurn();
         Debug.Log("Player Turn");
     }
+    #endregion
+
+    #region Victory/GameOver
+
     #endregion
 }

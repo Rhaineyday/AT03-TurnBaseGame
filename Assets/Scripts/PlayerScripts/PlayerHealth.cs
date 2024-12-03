@@ -8,12 +8,20 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] float maxHealth = 100, currentHealth;
     [SerializeField] Image displayImage;
     [SerializeField] Gradient gradientHealth;
+
     private bool canHeal = true;
     private PlayerMovement playerMovement;
+
     [SerializeField] public int maxHealthPotion = 3;
     [SerializeField] public int currentHealthPotion;
     [SerializeField] private bool hasPotion;
-    public int maxAmmo;
+
+    [SerializeField] public int maxAmmo = 3;
+    [SerializeField] public int currentAmmo;
+    [SerializeField] public bool hasAmmo;
+
+    public Text healthPotionDisplayText;
+    public Text ammoDisplayText;
 
 
     public void DamagePlayer(float damageValue)
@@ -22,6 +30,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= DefenceChance(damageValue);
         UpdateUI();
     }
+
     public int DefenceChance(float damage)
     {
         int dice = Random.Range(1,21);
@@ -95,6 +104,17 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void UseAmmo()
+    {
+        if (hasAmmo == true)
+        {
+            if (currentAmmo > 0)
+            {
+                currentAmmo -= 1;
+            }
+        }
+    }
+
     void UpdateUI()
     {
         displayImage.fillAmount = Mathf.Clamp01(currentHealth / maxHealth);
@@ -105,12 +125,14 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealthPotion = maxHealthPotion + (3*PlayerStats.healPotStat);
         hasPotion = true;
+        hasAmmo = true;
     }
 
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
         currentHealth = maxHealth;
+        currentAmmo = maxAmmo;
         displayImage.fillAmount = 1;
         UpdateUI();
     }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] float maxHealth = 100, currentHealth;
+    [SerializeField] public float maxHealth = 100, currentHealth;
     [SerializeField] Image displayImage;
     [SerializeField] Gradient gradientHealth;
 
@@ -22,7 +22,6 @@ public class PlayerHealth : MonoBehaviour
 
     public Text healthPotionDisplayText;
     public Text ammoDisplayText;
-
 
     public void DamagePlayer(float damageValue)
     {
@@ -104,15 +103,33 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void GiveAmmo()
+    {
+        currentAmmo += maxAmmo;
+        if (!hasAmmo)
+        {
+            hasAmmo = true;
+        }
+    }
+
     public void UseAmmo()
     {
-        if (hasAmmo == true)
+        if (playerMovement.actionsInTurn >= 2)
         {
-            if (currentAmmo > 0)
+            if (hasAmmo == true)
             {
-                currentAmmo -= 1;
-            }
-        }
+                if (currentAmmo > 0)
+                {
+                    currentAmmo -= 1;
+                    playerMovement.UpdateActionPoints(2);
+                    if (currentAmmo <= 0)
+                    {
+                        currentAmmo = 0;
+                        hasAmmo = false;
+                    }
+                }
+            }      
+        }        
     }
 
     void UpdateUI()
@@ -126,13 +143,13 @@ public class PlayerHealth : MonoBehaviour
         currentHealthPotion = maxHealthPotion + (3*PlayerStats.healPotStat);
         hasPotion = true;
         hasAmmo = true;
+        currentAmmo = maxAmmo;
     }
 
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
         currentHealth = maxHealth;
-        currentAmmo = maxAmmo;
         displayImage.fillAmount = 1;
         UpdateUI();
     }

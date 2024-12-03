@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,12 +18,23 @@ public class Combat : MonoBehaviour
     public GameObject enemy;
     #endregion
 
+    [SerializeField] GameObject gameOverPanel;
+
     // Start is called before the first frame update
     void Start()
     {
         enemyCurrentHealth = enemyMaxHealth;
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
+
+    private void Update()
+    {
+        if (playerHealth.currentHealth <= 0)
+        {
+            PlayerLost();
+        }
+    }
+
     #region Enemy Taking Damage
     public void PlayerAttackMelee()
     {
@@ -30,10 +42,13 @@ public class Combat : MonoBehaviour
         {
             playerHealth.GetComponent<PlayerMovement>().UpdateActionPoints(1);
             UpdateHP(damageValue);
-            if (enemyCurrentHealth == 0f)
+
+            if (enemyCurrentHealth <= 0f)
             {
                 enemy.SetActive(false);
+                PlayerHasWon();
             }
+
         }    
     }
     public void PlayerAttackRange()
@@ -41,14 +56,25 @@ public class Combat : MonoBehaviour
 
         if (playerHealth.GetComponent<PlayerMovement>().actionsInTurn > 1)
         {
-            playerHealth.GetComponent<PlayerMovement>().UpdateActionPoints(2);
             UpdateHP(damageValue * 0.5f);
-            if (enemyCurrentHealth == 0f)
+            playerHealth.UseAmmo();
+
+            if (enemyCurrentHealth <= 0f)
             {
                 enemy.SetActive(false);
+                PlayerHasWon();
             }
         }
+    }
 
+    public void PlayerHasWon()
+    {
+        GameManager.instance.PlayerWin();
+    }
+
+    public void PlayerLost()
+    {
+        GameManager.instance.PlayerLose();
     }
 
     private void UpdateHP(float damageValue)
@@ -63,7 +89,6 @@ public class Combat : MonoBehaviour
     public void EnemyAttack(float value)
     {
         Debug.Log("Enemy Attack");
-
         playerHealth.DamagePlayer(value);
         Debug.Log("Change Player Health");
         playerHealth.GetComponent<PlayerMovement>().StartPlayerTurn();
@@ -71,7 +96,4 @@ public class Combat : MonoBehaviour
     }
     #endregion
 
-    #region Victory/GameOver
-
-    #endregion
 }

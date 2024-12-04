@@ -26,14 +26,14 @@ public class GameManager : MonoBehaviour
     {
         state = GameStates.PlayerLose;
         menuScreen.SetActive(true);
-        menuText.text = "You lose";
+        menuText.text = "Defeated!\r\nYou lost against the Blue Baron!";
     }
 
     public void PlayerWin()
     {
         state = GameStates.PlayerWin;
         menuScreen.SetActive(true);
-        menuText.text = "You win";
+        menuText.text = "Congratulations!\r\nYou defeated the Blue Baron!";
     }
 }
 

@@ -84,7 +84,7 @@ public class EnemyMovement : MonoBehaviour
                         }
                         else
                         {
-                            combat.enemyAttackValue = 20;
+                            combat.enemyAttackValue = 15;
                             combat.EnemyAttack(combat.enemyAttackValue);
                         }
                     }
